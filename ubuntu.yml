@@ -1,0 +1,117 @@
+# First thing to do after fresh install
+# sudo add-apt-repository ppa:ansible/ansible
+# sudo apt-get update
+# sudo apt-get install ansible
+# ansible-playbook -K -i localhost ubuntu.yml --check
+---
+ - name: Setup SPADE and its pre-requisites on Ubuntu 14.04 32 bit LTS
+   hosts: all
+   vars:
+        llvm_version: 3.6
+        core_utils_version: 8.24
+        install_base: '~'
+        coreutils: ['cat', 'ls']
+   tasks:
+        - name: Install standard tools for SPADE build
+          tags: [common]
+          apt: pkg={{ item }} state=installed
+          sudo: yes
+          with_items:
+           - pkg-config
+           - build-essential
+           - git
+           - libaudit-dev 
+           - auditd 
+           - libfuse-dev 
+           - fuse
+           - graphviz
+           - llvm-{{ llvm_version }}
+           - clang-{{ llvm_version }}
+
+        - name: Install add-apt-repostory
+          apt: name=software-properties-common state=latest
+
+        - name: Add Oracle Java Repository
+          apt_repository: repo='ppa:webupd8team/java'
+
+        - name: Accept Java 8 Licence
+          shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | tee /etc/oracle-java-8-licence-acceptance | /usr/bin/debconf-set-selections
+          args:
+            creates: /etc/oracle-java-8-licence-acceptance
+
+        - name: Install Oracle Java 8
+          apt: name={{item}} state=latest
+          with_items:
+            - oracle-java8-installer
+            - ca-certificates
+            - oracle-java8-set-default
+
+        - name: Create symlinks
+          file: src=/usr/include/{{item}}-{{ llvm_version }}/{{item}}/ dest=/usr/include/{{item}} state=link
+          with_items:
+            - llvm
+            - llvm-c
+          sudo: yes
+
+        - name: Create symlinks
+          file: src=/usr/bin/{{item}}-{{ llvm_version }} dest=/usr/bin/{{item}} state=link
+          with_items:
+            - llc
+            - opt
+          sudo: yes
+
+        - name: Create symlinks
+          file: src=/usr/bin/llvm-{{item}}-{{ llvm_version }} dest=/usr/bin/llvm-{{item}} state=link
+          with_items:
+            - ar
+            - as
+            - bcanalyzer
+            - config
+            - cov
+            - diff
+            - dis
+            - dsymutil
+            - dwarfdump
+            - extract
+            - link
+            - mc
+            - mcmarkup
+            - nm
+            - objdump
+            - profdata
+            - ranlib
+            - readobj
+            - rtdyld
+            - size
+            - stress
+            - symbolizer
+            - tblgen
+            - vtabledump
+          sudo: yes
+
+        - git: repo=https://github.com/ashish-gehani/SPADE dest={{ install_base }}
+        - git: repo=https://github.com/travitch/whole-program-llvm dest={{ install_base }}
+        - get_url: url=http://ftp.gnu.org/gnu/coreutils/coreutils-{{ core_utils_version }}.tar.xz dest={{ install_base }}
+        - unarchive: src={{ install_base }}/coreutils-{{ core_utils_version }}.tar.xz dest={{ install_base }}
+
+        - name: Build SPADE
+          shell: >
+            cd {{ install_base }}/SPADE
+            ./configure
+            make
+            make build-linux-llvm
+            cd {{ install_base }}
+
+        - name: Build coreutils
+          environment:
+            PATH:$PATH:{{ install_base }}/whole-program-llvm
+          shell: >
+            cd {{ install_base }}/coreutils-{{ core_utils_version }}
+            export LLVM_COMPILER=clang
+            export WLLVM_CONFIGURE_ONLY=1
+            CC=wllvm ./configure 
+            unset WLLVM_CONFIGURE_ONLY
+            make
+            extract-bc src/{{ item }}
+            cd {{ install_base }}
+          with_items: "{{ coreutils }}"
