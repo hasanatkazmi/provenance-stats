@@ -18,7 +18,7 @@ sudo apt-get install ansible
 
 - Let Ansible install and setup the machine:
 ```
-source <(curl -s https://raw.github.com/hasnatkazmi/provenance-stats/master/ubuntu.sh)
+source <(curl -s https://raw.githubusercontent.com/hasanatkazmi/provenance-stats/master/ubuntu.sh)
 ```
 (for debug commands, read top of ubuntu.yml)
       
