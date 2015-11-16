@@ -127,3 +127,8 @@
             export PIN_HOME={{ install_base }}/pin
             make
             cd {{ install_base }}
+        - name: Generate input files for tests
+          shell: >
+            cd {{ install_base }}/provenance-stats/scripts/
+            python mkinput.py input1k.txt 1k
+            cd {{ install_base }}
