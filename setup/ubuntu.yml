@@ -11,6 +11,7 @@
         core_utils_version: 8.24
         install_base: '~'
         coreutils: ['cat', 'ls']
+        repository: 'provenance-stats'
    tasks:
         - name: Install standard tools for SPADE build
           tags: [common]
@@ -103,7 +104,21 @@
             make build-linux-llvm
             cd {{ install_base }}
 
-        - name: Build coreutils
+        - name: Build coreutils (without instrumentation)
+          environment:
+            PATH:$PATH:{{ install_base }}/whole-program-llvm
+          shell: >
+            cd {{ install_base }}/coreutils-{{ core_utils_version }}
+            export LLVM_COMPILER=clang
+            export WLLVM_CONFIGURE_ONLY=1
+            CC=wllvm ./configure 
+            unset WLLVM_CONFIGURE_ONLY
+            make
+            cd {{ install_base }}
+            cp -r {{ install_base }}/coreutils-{{ core_utils_version }} {{ install_base }}/bindir/coreutils-{{ core_utils_version }}-noninstrumentation
+            
+
+        - name: Build coreutils (with instrumentation)
           environment:
             PATH:$PATH:{{ install_base }}/whole-program-llvm
           shell: >
@@ -127,8 +142,9 @@
             export PIN_HOME={{ install_base }}/pin
             make
             cd {{ install_base }}
+            
         - name: Generate input files for tests
           shell: >
-            cd {{ install_base }}/provenance-stats/scripts/
+            cd {{ install_base }}/{{ repository }}/scripts/
             python mkinput.py input1k.txt 1k
             cd {{ install_base }}
