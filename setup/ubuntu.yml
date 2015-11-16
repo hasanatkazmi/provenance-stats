@@ -12,7 +12,7 @@
         home: '~'
         coreutils: ['cat', 'ls']
         repository: 'provenance-stats'
-        staging: '{{ home }}/{{ repository }}/staging/'
+        staging: '{{ home }}/{{ repository }}/staging'
    tasks:
         - name: Install standard tools for SPADE build
           tags: [common]
@@ -91,9 +91,9 @@
             - vtabledump
           sudo: yes
 
-        - git: repo=https://github.com/ashish-gehani/SPADE.git dest={{ staging }}
-        - git: repo=https://github.com/travitch/whole-program-llvm.git dest={{ staging }}
-        - git: repo=https://github.com/m000/dtracker.git dest={{ staging }}
+        - git: repo=https://github.com/ashish-gehani/SPADE.git dest={{ staging }}/SPADE
+        - git: repo=https://github.com/travitch/whole-program-llvm.git dest={{ staging }}/whole-program-llvm
+        - git: repo=https://github.com/m000/dtracker.git dest={{ staging }}/dtracker
         - get_url: url=http://ftp.gnu.org/gnu/coreutils/coreutils-{{ core_utils_version }}.tar.xz dest={{ staging }}
         - unarchive: src={{ staging }}/coreutils-{{ core_utils_version }}.tar.xz dest={{ staging }}
 
