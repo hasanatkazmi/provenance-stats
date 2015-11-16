@@ -9,9 +9,10 @@
    vars:
         llvm_version: 3.6
         core_utils_version: 8.24
-        install_base: '~'
+        home: '~'
         coreutils: ['cat', 'ls']
         repository: 'provenance-stats'
+        staging: {{ home }}/{{ repository }}/staging/
    tasks:
         - name: Install standard tools for SPADE build
           tags: [common]
@@ -90,61 +91,60 @@
             - vtabledump
           sudo: yes
 
-        - git: repo=https://github.com/ashish-gehani/SPADE dest={{ install_base }}
-        - git: repo=https://github.com/travitch/whole-program-llvm dest={{ install_base }}
-        - git: repo=https://github.com/m000/dtracker.git dest={{ install_base }}
-        - get_url: url=http://ftp.gnu.org/gnu/coreutils/coreutils-{{ core_utils_version }}.tar.xz dest={{ install_base }}
-        - unarchive: src={{ install_base }}/coreutils-{{ core_utils_version }}.tar.xz dest={{ install_base }}
+        - git: repo=https://github.com/ashish-gehani/SPADE.git dest={{ staging }}
+        - git: repo=https://github.com/travitch/whole-program-llvm.git dest={{ staging }}
+        - git: repo=https://github.com/m000/dtracker.git dest={{ staging }}
+        - get_url: url=http://ftp.gnu.org/gnu/coreutils/coreutils-{{ core_utils_version }}.tar.xz dest={{ staging }}
+        - unarchive: src={{ staging }}/coreutils-{{ core_utils_version }}.tar.xz dest={{ staging }}
 
         - name: Build SPADE
           shell: >
-            cd {{ install_base }}/SPADE
+            cd {{ staging }}/SPADE
             ./configure
             make
             make build-linux-llvm
-            cd {{ install_base }}
 
         - name: Build coreutils (without instrumentation)
           environment:
-            PATH:$PATH:{{ install_base }}/whole-program-llvm
+            PATH:$PATH:{{ staging }}/whole-program-llvm
           shell: >
-            cd {{ install_base }}/coreutils-{{ core_utils_version }}
+            cd {{ staging }}/coreutils-{{ core_utils_version }}
             export LLVM_COMPILER=clang
             export WLLVM_CONFIGURE_ONLY=1
             CC=wllvm ./configure 
             unset WLLVM_CONFIGURE_ONLY
             make
-            cd {{ install_base }}
-            cp -r {{ install_base }}/coreutils-{{ core_utils_version }} {{ install_base }}/bindir/coreutils-{{ core_utils_version }}-noninstrumentation
+            cd {{ staging }}
+            cp -r {{ staging }}/coreutils-{{ core_utils_version }} {{ staging }}/bindir/coreutils-{{ core_utils_version }}-noninstrumentation
             
 
         - name: Build coreutils (with instrumentation)
           environment:
-            PATH:$PATH:{{ install_base }}/whole-program-llvm
+            PATH:$PATH:{{ staging }}/whole-program-llvm
           shell: >
-            cd {{ install_base }}/coreutils-{{ core_utils_version }}
+            cd {{ staging }}/coreutils-{{ core_utils_version }}
             export LLVM_COMPILER=clang
             export WLLVM_CONFIGURE_ONLY=1
             CC=wllvm ./configure 
             unset WLLVM_CONFIGURE_ONLY
             make
             extract-bc src/{{ item }}
-            cd {{ install_base }}
+            cd {{ staging }}
           with_items: "{{ coreutils }}"
 
         - name: Build dtracker
           shell: >
-            cd {{ install_base }}/dtracker
+            cd {{ staging }}/dtracker
             ./configure
             make -C support -f makefile.pin
             make -C support -f makefile.provtoolbox
             GIT_SSL_NO_VERIFY=true git submodule update --init
-            export PIN_HOME={{ install_base }}/pin
+            export PIN_HOME={{ staging }}/pin
             make
-            cd {{ install_base }}
+            cd {{ home }}
             
         - name: Generate input files for tests
           shell: >
-            cd {{ install_base }}/{{ repository }}/scripts/
+            cd {{ home }}/{{ repository }}/scripts/
             python mkinput.py input1k.txt 1k
-            cd {{ install_base }}
+            cd {{ home }}
