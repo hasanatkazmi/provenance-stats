@@ -110,7 +110,7 @@
 
         - name: Build coreutils (without instrumentation)
           environment:
-            PATH:$PATH:{{ staging }}/whole-program-llvm
+            PATH: {{ staging }}/whole-program-llvm:{{ ansible_env.PATH }}
           shell: >
             cd {{ staging }}/coreutils-{{ core_utils_version }}
             export LLVM_COMPILER=clang
@@ -124,7 +124,7 @@
 
         - name: Build coreutils (with instrumentation)
           environment:
-            PATH:$PATH:{{ staging }}/whole-program-llvm
+            PATH: {{ staging }}/whole-program-llvm:{{ ansible_env.PATH }}
           shell: >
             cd {{ staging }}/coreutils-{{ core_utils_version }}
             export LLVM_COMPILER=clang
