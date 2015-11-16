@@ -91,6 +91,7 @@
 
         - git: repo=https://github.com/ashish-gehani/SPADE dest={{ install_base }}
         - git: repo=https://github.com/travitch/whole-program-llvm dest={{ install_base }}
+        - git: repo=https://github.com/m000/dtracker.git dest={{ install_base }}
         - get_url: url=http://ftp.gnu.org/gnu/coreutils/coreutils-{{ core_utils_version }}.tar.xz dest={{ install_base }}
         - unarchive: src={{ install_base }}/coreutils-{{ core_utils_version }}.tar.xz dest={{ install_base }}
 
@@ -115,3 +116,14 @@
             extract-bc src/{{ item }}
             cd {{ install_base }}
           with_items: "{{ coreutils }}"
+
+        - name: Build dtracker
+          shell: >
+            cd {{ install_base }}/dtracker
+            ./configure
+            make -C support -f makefile.pin
+            make -C support -f makefile.provtoolbox
+            GIT_SSL_NO_VERIFY=true git submodule update --init
+            export PIN_HOME={{ install_base }}/pin
+            make
+            cd {{ install_base }}
