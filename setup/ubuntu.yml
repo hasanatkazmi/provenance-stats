@@ -93,7 +93,6 @@
 
         - name: config http.sslVerify false
           command: git config --global http.sslVerify false
-          when: result.stdout != 'false'
 
         - git: repo=https://github.com/ashish-gehani/SPADE.git dest={{ staging }}/SPADE
         - git: repo=https://github.com/travitch/whole-program-llvm.git dest={{ staging }}/whole-program-llvm
