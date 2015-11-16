@@ -12,7 +12,7 @@
         home: '~'
         coreutils: ['cat', 'ls']
         repository: 'provenance-stats'
-        staging: {{ home }}/{{ repository }}/staging/
+        staging: '{{ home }}'/'{{ repository }}'/staging/
    tasks:
         - name: Install standard tools for SPADE build
           tags: [common]
