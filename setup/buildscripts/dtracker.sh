@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+# Pin only works on 32 bit Linux. 
+
 cwd=$(pwd)
 cd $1
 
