@@ -101,11 +101,10 @@
         - unarchive: src={{ staging }}/coreutils-{{ core_utils_version }}.tar.xz dest={{ staging }}
 
         - name: Build SPADE
-          shell: >
-            cd {{ staging }}/SPADE
-            ./configure
-            make
-            make build-linux-llvm
+          command: cd {{ staging }}/SPADE
+          command: ./configure
+          command: make
+          command: make build-linux-llvm
 
         - name: Build coreutils (without instrumentation)
           environment:
