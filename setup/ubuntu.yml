@@ -28,6 +28,7 @@
            - graphviz
            - llvm-{{ llvm_version }}
            - clang-{{ llvm_version }}
+           - realpath
 
         - name: Install add-apt-repostory
           apt: name=software-properties-common state=latest
