@@ -13,7 +13,7 @@ It works on Ubuntu 14.04 LTS 32 bit only.
 ```
 sudo add-apt-repository ppa:ansible/ansible
 sudo apt-get update
-sudo apt-get install ansible
+sudo apt-get install ansible git
 ```
 
 - Let Ansible install and setup the machine:
