@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASEDIR=$(dirname $0)
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PATH=$PATH:$BASEDIR/../../staging/whole-program-llvm
 cwd=$(pwd)
 cd $BASEDIR/../../staging/SPADE
