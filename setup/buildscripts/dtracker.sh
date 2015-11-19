@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-BASEDIR=$(dirname $0)
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cwd=$(pwd)
 DTRACKER_HOME=$BASEDIR/../../staging/dtracker
 
