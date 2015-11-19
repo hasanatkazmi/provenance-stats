@@ -6,12 +6,19 @@
 BASEDIR=$(dirname $0)
 cwd=$(pwd)
 cd $BASEDIR/../../staging/coreutils-8.24/src
+# cd $BASEDIR/../../staging/whole-program-llvm/
 
+BC=$(readlink -f $BASEDIR/../../../staging/whole-program-llvm/extract-bc)
+echo $BC
 
-for bin in cat ls
-do
-	$BASEDIR/../../staging/whole-program-llvm/extract-bc $bin
-	$BASEDIR/../../staging/SPADE/bin/llvm/llvmTrace.sh $bin  -no-monitor $bin -instrument-libc
-done
+# for bin in cat ls
+# do
+# 	# $BASEDIR/../../staging/whole-program-llvm/extract-bc $bin
+# 	# $BASEDIR/../../staging/whole-program-llvm/extract-bc
+
+# 	# /home/hasanat/provenance-stats/staging/whole-program-llvm/extract-bc
+
+# 	# $BASEDIR/../../staging/SPADE/bin/llvm/llvmTrace.sh $bin  -no-monitor $bin -instrument-libc
+# done
 
 cd $cwd
