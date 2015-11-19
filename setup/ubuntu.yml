@@ -10,7 +10,6 @@
         llvm_version: 3.6
         core_utils_version: 8.24
         home: '~'
-        coreutils: ['cat', 'ls']
         repository: 'provenance-stats'
         staging: '{{ home }}/{{ repository }}/staging'
    tasks:
