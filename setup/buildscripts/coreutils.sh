@@ -1,12 +1,14 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+
+BASEDIR=$(dirname $0)
 
 cwd=$(pwd)
-cd $1
+cd $BASEDIR/../../staging/coreutils-8.24
 
-export LLVM_COMPILER=clang
-export WLLVM_CONFIGURE_ONLY=1
-CC=wllvm ./configure 
-unset WLLVM_CONFIGURE_ONLY
+./configure
 make
 
 cd $cwd
+
+mkdir -p $BASEDIR/../../bins/uninstrumented/
+cp -r $BASEDIR/../../staging/coreutils-8.24 $BASEDIR/../../bins/uninstrumented/coreutils-8.24

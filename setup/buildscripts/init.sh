@@ -1,8 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-BASEDIR=$(dirname $0)
-
-sh $BASEDIR/coreutils.sh $BASEDIR/../../staging/coreutils-*
-sh $BASEDIR/spade.sh $BASEDIR/../../staging/SPADE/
-sh $BASEDIR/dtracker.sh $BASEDIR/../../staging/dtracker/
-
+bash $BASEDIR/dtracker.sh
+bash $BASEDIR/spade.sh
+bash $BASEDIR/coreutils.sh
+bash $BASEDIR/coreutils-instrumented.sh

@@ -33,3 +33,4 @@
 
 #staging directory needs not to be pushed
 staging
+bins

@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 
-# Pin only works on 32 bit Linux. 
-
+BASEDIR=$(dirname $0)
 cwd=$(pwd)
-cd $1
+DTRACKER_HOME=$BASEDIR/../../staging/dtracker
 
-DTRACKER_HOME="$HOME"/dtracker
+cd $DTRACKER_HOME
+
+# Pin only works on 32 bit Linux. 
 
 make -C support -f makefile.pin
 make -C support -f makefile.provtoolbox

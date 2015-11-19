@@ -1,7 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
+BASEDIR=$(dirname $0)
+PATH=$PATH:$BASEDIR/../../staging/whole-program-llvm
 cwd=$(pwd)
-cd $1
+cd $BASEDIR/../../staging/SPADE
 
 ./configure
 make
