@@ -61,6 +61,8 @@
           with_items:
             - llc
             - opt
+            - clang++
+            - clang
           sudo: yes
 
         - name: Create symlinks
