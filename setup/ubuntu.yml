@@ -29,6 +29,7 @@
            - llvm-{{ llvm_version }}
            - clang-{{ llvm_version }}
            - realpath
+           - unzip
 
         - name: Install add-apt-repostory
           apt: name=software-properties-common state=latest
