@@ -30,6 +30,7 @@
            - clang-{{ llvm_version }}
            - realpath
            - unzip
+           - expect
 
         - name: Install add-apt-repostory
           apt: name=software-properties-common state=latest
