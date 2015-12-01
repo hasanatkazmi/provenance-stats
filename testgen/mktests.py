@@ -136,7 +136,7 @@ for reporter in reporters:
                     output1 = _("output1.txt" )
                 )
                 writeScript(filename = _("reporter_attach.sh"),
-                    fmt = formats['spade_addstracereporter'],
+                    fmt = formats['spade_addreporter'],
                     data = {
                         'command_line' : command_line,
                         'timeformat': the_timeformat,
@@ -144,11 +144,15 @@ for reporter in reporters:
                         'elogfile': the_elogfile,
                         'tlogfile': the_tlogfile,
                         'spade_controller': spade_controller,
+                        'reporter': 'Strace',
                     }
                 )
                 writeScript(filename = _("reporter_remove.sh"),
-                    fmt = formats['spade_rmstracereporter'],
-                    data = { 'spade_controller': spade_controller, }
+                    fmt = formats['spade_rmreporter'],
+                    data = { 
+                        'spade_controller': spade_controller,
+                        'reporter': 'Strace',
+                    }
                 )
 
             # Utility runner scripts for llvm.
@@ -170,8 +174,28 @@ for reporter in reporters:
                         'logfile': the_logfile,
                         'elogfile': the_elogfile,
                         'tlogfile': the_tlogfile,
+                        'bindir' : the_bindir,
                     }
                 )
+                # writeScript(filename = _("reporter_attach.sh"),
+                #     fmt = formats['spade_addreporter'],
+                #     data = {
+                #         'command_line' : command_line,
+                #         'timeformat': the_timeformat,
+                #         'logfile': the_logfile,
+                #         'elogfile': the_elogfile,
+                #         'tlogfile': the_tlogfile,
+                #         'spade_controller': spade_controller,
+                #         'reporter': 'LLVM',
+                #     }
+                # )
+                # writeScript(filename = _("reporter_remove.sh"),
+                #     fmt = formats['spade_rmreporter'],
+                #     data = { 
+                #         'spade_controller': spade_controller,
+                #         'reporter': 'LLVM',
+                #     }
+                # )
 
             # Reporter initialization/runner script for dtracker.
             # The command is launched from the runbin script.
@@ -275,12 +299,14 @@ for reporter in reporters:
                     fmt = dedent('''
                         {spade_dbattach}
                         {command_line}
+                        sleep {sleep_time} 
                         {spade_dbremove}
                         {genpng}
                     '''),
                     data = {
                         'spade_dbattach': _("spade_dbattach.sh"),
                         'command_line': the_runbin,
+                        'sleep_time': sleep_time,
                         'spade_dbremove': _("spade_dbremove.sh"),
                         'genpng': _("genpng.sh")
                     },

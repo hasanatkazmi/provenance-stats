@@ -28,11 +28,12 @@ bindirs         =  {
     'llvm':     pj(topdir, 'bins', 'instrumented', 'coreutils-8.24', 'src'),       # dir containing the tested binaries used by llvm reporter
     'dtracker': pj(topdir, 'bins', 'uninstrumented', 'coreutils-8.24', 'src'),            # dir containing the tested binaries used by dtracker reporter
 }
-spade_controller    = pj(topdir, 'staging', 'SPADE', 'bin', 'spade-controller.sh')     # path to SPADE controller script
+spade_bin    = pj(topdir, 'staging', 'SPADE', 'bin', 'spade')     # path to SPADE controller script
+spade_controller = spade_bin + " " + "control"
 spade_dslpipe       = pj(topdir, 'staging', 'SPADE', 'spade_pipe')                     # path to SPADE DSL pipe
 dtracker_home       = pj(topdir, 'staging', 'dtracker')                                # location of DataTracker directory
 pin_home            = pj(dtracker_home, 'pin')                              # location of the Intel Pin directory
-
+sleep_time  = 50    # seconds to sleep before removing reporter and/or storage
 
 ### Formats for producing scripts
 utils = {
@@ -77,42 +78,56 @@ utils = {
 formats = {
     'spade_adddb' : '''
         #!/usr/bin/expect -f
-        spawn "{spade_controller}"
+        spawn {spade_controller}
         expect "shutdown"
         send "add storage Graphviz {graphvizdb}\\r"
         expect "Adding storage Graphviz... done\\r"
     ''',
     'spade_rmdb' : '''
         #!/usr/bin/expect -f
-        spawn "{spade_controller}"
+        spawn {spade_controller} 
         expect "shutdown"
         send "remove storage Graphviz\\r"
         expect "Shutting down storage Graphviz*"
     ''',
-    'spade_addstracereporter' : '''
+    # 'spade_addstracereporter' : '''
+    #     #!/usr/bin/expect -f
+    #     spawn {spade_controller}
+    #     expect "shutdown"
+    #     send "add reporter Strace {command_line}\\r"
+    #     expect "Adding reporter Strace... done\\r"
+    # ''',
+    # 'spade_rmstracereporter' : '''
+    #     #!/usr/bin/expect -f
+    #     spawn {spade_controller} 
+    #     expect "shutdown"
+    #     send "remove reporter Strace\\r"
+    #     expect "Shutting down reporter Strace... done*"
+    # ''',
+    'spade_addreporter' : '''
         #!/usr/bin/expect -f
-        spawn "{spade_controller}"
+        spawn {spade_controller}
         expect "shutdown"
-        send "add reporter Strace {command_line}\\r"
-        expect "Adding reporter Strace... done\\r"
+        send "add reporter {reporter} {command_line}\\r"
+        expect "Adding reporter {reporter}... done\\r"
     ''',
-    'spade_rmstracereporter' : '''
+    'spade_rmreporter' : '''
         #!/usr/bin/expect -f
-        spawn "{spade_controller}"
+        spawn {spade_controller} 
         expect "shutdown"
-        send "remove reporter Strace\\r"
-        expect "Shutting down reporter Strace... done*"
+        send "remove reporter {reporter}\\r"
+        expect "Shutting down reporter {reporter}... done*"
     ''',
     'spade_adddsl' : '''
         #!/usr/bin/expect -f
-        spawn "{spade_controller}"
+        spawn {spade_controller} 
         expect "shutdown"
         send "add reporter DSL {spade_dslpipe}\\r"
         expect "Adding reporter DSL... done\\r"
     ''',
     'spade_rmdsl' : '''
         #!/usr/bin/expect -f
-        spawn "{spade_controller}"
+        spawn {spade_controller} 
         expect "shutdown"
         send "remove reporter DSL\\r"
         expect "Shutting down reporter DSL... done\\r"
@@ -149,7 +164,9 @@ formats = {
         }}
 
         echo 'Running: {command_line}'
+    cd {bindir}
 	{{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
+    cd -
     ''',
     'dtracker_runbin.sh': '''
         #!/bin/bash
