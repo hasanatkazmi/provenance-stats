@@ -31,6 +31,7 @@
            - realpath
            - unzip
            - expect
+           - strace
 
         - name: Install add-apt-repostory
           apt: name=software-properties-common state=latest
