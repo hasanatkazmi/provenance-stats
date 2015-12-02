@@ -148,12 +148,12 @@ formats = {
         export TIMEFORMAT='{timeformat}'
 
         function do_run() {{
-            {command_line}
+            strace {command_line}
         }}
 
         echo 'Running: {command_line}'
 	{{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
-    ''', # strace_runbin.sh is not currently used!
+    ''', 
     'llvm_runbin.sh': '''
         #!/bin/bash
         export TIMEFORMAT='{timeformat}'
