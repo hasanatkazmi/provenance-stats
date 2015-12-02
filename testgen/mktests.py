@@ -135,6 +135,7 @@ for reporter in reporters:
                     local_input1 =  _(input1_base),
                     output1 = _("output1.txt" )
                 )
+                command_line = "cmd='" + command_line + "'"
                 writeScript(filename = _("reporter_attach.sh"),
                     fmt = formats['spade_addreporter'],
                     data = {
