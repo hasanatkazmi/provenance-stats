@@ -32,6 +32,8 @@
            - unzip
            - expect
            - strace
+           - python-matplotlib
+           - python-numpy
 
         - name: Install add-apt-repostory
           apt: name=software-properties-common state=latest
