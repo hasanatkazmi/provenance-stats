@@ -135,6 +135,18 @@ for reporter in reporters:
                     local_input1 =  _(input1_base),
                     output1 = _("output1.txt" )
                 )
+                writeScript(filename = the_runbin,
+                    fmt = formats['strace_runbin.sh'],
+                    data = {
+                        'command_line': command_line,
+                        'timeformat': the_timeformat,
+                        'input1':  input1,
+                        'local_input1':  _(input1_base),
+                        'logfile': the_logfile,
+                        'elogfile': the_elogfile,
+                        'tlogfile': the_tlogfile,
+                    }
+                )
                 command_line = "cmd='" + command_line + "'"
                 writeScript(filename = _("reporter_attach.sh"),
                     fmt = formats['spade_addreporter'],
@@ -284,13 +296,15 @@ for reporter in reporters:
                         {reporter_remove}
                         {spade_dbremove}
                         {genpng}
+                        {command_line}
                         '''),
                     data = {
                         'spade_dbattach' : _("spade_dbattach.sh"),
                         'reporter_attach': _("reporter_attach.sh"),
                         'reporter_remove': _("reporter_remove.sh"),
                         'spade_dbremove' : _("spade_dbremove.sh"),
-                        'genpng' : _("genpng.sh")
+                        'genpng' : _("genpng.sh"),
+                        'command_line' : _("strace_runbin.sh")
                     },
                     open_mode = 'a',
                     header = bash_header,
