@@ -177,14 +177,14 @@ formats = {
             {pin_home}/pin.sh -follow_execv -t {dtracker_home}/obj-ia32/dtracker.so -o {dtracker_home}/rawprov.out -- {command_line}
         }}
 
-	[ -e {spade_dslpipe} ] && rm -f {spade_dslpipe}
-	{spade_dbattach}
-        {spade_reporter_add}
+	#[ -e {spade_dslpipe} ] && rm -f {spade_dslpipe}
+	#{spade_dbattach}
+    #    {spade_reporter_add}
         echo 'Running: {command_line}'
 	{{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
         {dtracker_home}/raw2dsl.py < {dtracker_home}/rawprov.out > {spade_dslpipe}
-        {spade_reporter_rm}
-	{spade_dbremove}
+    #    {spade_reporter_rm}
+	#{spade_dbremove}
     ''',
 }
 
