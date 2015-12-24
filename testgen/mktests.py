@@ -147,7 +147,6 @@ for reporter in reporters:
                         'tlogfile': the_tlogfile,
                     }
                 )
-                command_line = "cmd='" + command_line + "'"
                 writeScript(filename = _("reporter_attach.sh"),
                     fmt = formats['spade_addreporter'],
                     data = {
@@ -157,14 +156,14 @@ for reporter in reporters:
                         'elogfile': the_elogfile,
                         'tlogfile': the_tlogfile,
                         'spade_controller': spade_controller,
-                        'reporter': 'Strace',
+                        'reporter': 'StraceLinux',
                     }
                 )
                 writeScript(filename = _("reporter_remove.sh"),
                     fmt = formats['spade_rmreporter'],
                     data = { 
                         'spade_controller': spade_controller,
-                        'reporter': 'Strace',
+                        'reporter': 'StraceLinux',
                     }
                 )
 
@@ -190,25 +189,26 @@ for reporter in reporters:
                         'bindir' : the_bindir,
                     }
                 )
-                # writeScript(filename = _("reporter_attach.sh"),
-                #     fmt = formats['spade_addreporter'],
-                #     data = {
-                #         'command_line' : command_line,
-                #         'timeformat': the_timeformat,
-                #         'logfile': the_logfile,
-                #         'elogfile': the_elogfile,
-                #         'tlogfile': the_tlogfile,
-                #         'spade_controller': spade_controller,
-                #         'reporter': 'LLVM',
-                #     }
-                # )
-                # writeScript(filename = _("reporter_remove.sh"),
-                #     fmt = formats['spade_rmreporter'],
-                #     data = { 
-                #         'spade_controller': spade_controller,
-                #         'reporter': 'LLVM',
-                #     }
-                # )
+                command_line = "forcedremoval=false"
+                writeScript(filename = _("reporter_attach.sh"),
+                    fmt = formats['spade_addreporter'],
+                    data = {
+                        'command_line' : command_line,
+                        'timeformat': the_timeformat,
+                        'logfile': the_logfile,
+                        'elogfile': the_elogfile,
+                        'tlogfile': the_tlogfile,
+                        'spade_controller': spade_controller,
+                        'reporter': 'LLVM',
+                    }
+                )
+                writeScript(filename = _("reporter_remove.sh"),
+                    fmt = formats['spade_rmreporter'],
+                    data = { 
+                        'spade_controller': spade_controller,
+                        'reporter': 'LLVM',
+                    }
+                )
 
             # Reporter initialization/runner script for dtracker.
             # The command is launched from the runbin script.
@@ -293,6 +293,7 @@ for reporter in reporters:
                     fmt = dedent('''
                         {spade_dbattach}
                         {reporter_attach}
+                        sleep 10
                         {reporter_remove}
                         {spade_dbremove}
                         {genpng}
@@ -313,15 +314,17 @@ for reporter in reporters:
                 writeScript( filename = util_runner,
                     fmt = dedent('''
                         {spade_dbattach}
+                        {reporter_attach}
                         {command_line}
-                        sleep {sleep_time} 
+                        {reporter_remove}
                         {spade_dbremove}
                         {genpng}
                     '''),
                     data = {
                         'spade_dbattach': _("spade_dbattach.sh"),
+                        'reporter_attach': _("reporter_attach.sh"),
+                        'reporter_remove': _("reporter_remove.sh"),
                         'command_line': the_runbin,
-                        'sleep_time': sleep_time,
                         'spade_dbremove': _("spade_dbremove.sh"),
                         'genpng': _("genpng.sh")
                     },

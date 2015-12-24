@@ -33,7 +33,7 @@ spade_controller = spade_bin + " " + "control"
 spade_dslpipe       = pj(topdir, 'staging', 'SPADE', 'spade_pipe')                     # path to SPADE DSL pipe
 dtracker_home       = pj(topdir, 'staging', 'dtracker')                                # location of DataTracker directory
 pin_home            = pj(dtracker_home, 'pin')                              # location of the Intel Pin directory
-sleep_time  = 50    # seconds to sleep before removing reporter and/or storage
+sleep_time  = 150   # seconds to sleep before removing reporter and/or storage
 
 ### Formats for producing scripts
 utils = {
