@@ -3,7 +3,7 @@
 ##Work in progress. Do not use!
 Tested on Ubuntu 14.04 LTS 32 bit only.
 
-- setup: Scripts related to setting up the system to run tests.
+- `setup`: Scripts related to setting up the system to run tests.
 - setup/ubuntu.yml: Ansible Playbook that sets up development environment for [SPADE][1].
 - setup/ubuntu.sh: Automates the install process by invoking Ansible. This scripts also builds all required tools and softwares.
 - setup/localhost: Required for Ansible.
