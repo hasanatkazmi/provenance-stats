@@ -1,5 +1,7 @@
 ### provenance-stats
 
+This reporsitory contains system setup, test generation and test stats generation scripts for instrumentation tradeoff and comparision work at SRI. 
+
 ##Work in progress. Do not use!
 Tested on Ubuntu 14.04 LTS 32 bit only.
 
