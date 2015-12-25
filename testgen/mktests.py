@@ -214,11 +214,11 @@ for reporter in reporters:
             # The command is launched from the runbin script.
             if reporter == "dtracker":
                 # the attach/detach scripts can be added only once if we want
-                writeScript(filename = _("spade_adddsl.sh"),
+                writeScript(filename = _("reporter_attach.sh"),
                     fmt = formats['spade_adddsl'],
                     data = { 'spade_controller': spade_controller, 'spade_dslpipe': spade_dslpipe, }
                 )
-                writeScript(filename = _("spade_rmdsl.sh"),
+                writeScript(filename = _("reporter_remove.sh"),
                     fmt = formats['spade_rmdsl'],
                     data = { 'spade_controller': spade_controller, }
                 )
@@ -241,8 +241,8 @@ for reporter in reporters:
                         'tlogfile': the_tlogfile,
                         'spade_dbattach' : _("spade_dbattach.sh"),
                         'spade_dbremove' : _("spade_dbremove.sh"),
-                        'spade_reporter_add' : _("spade_adddsl.sh"),
-                        'spade_reporter_rm' : _("spade_rmdsl.sh"),
+                        'spade_reporter_add' : _("reporter_attach.sh"),
+                        'spade_reporter_rm' : _("reporter_remove.sh"),
                         'pin_home' : pin_home,
                         'dtracker_home': dtracker_home,
                         'spade_dslpipe': spade_dslpipe,
@@ -335,13 +335,17 @@ for reporter in reporters:
                 writeScript( filename = util_runner,
                     fmt = dedent('''
                         {spade_dbattach}
+                        {reporter_attach}
                         {command_line}
+                        {reporter_remove}
                         {spade_dbremove}
                         {genpng}
                     '''),
                     data = {
                         'spade_dbattach': _("spade_dbattach.sh"),
+                        'reporter_attach': _("reporter_attach.sh"),
                         'command_line': the_runbin,
+                        'reporter_remove': _("reporter_remove.sh"),
                         'spade_dbremove': _("spade_dbremove.sh"),
                         'genpng': _("genpng.sh")
                     },
