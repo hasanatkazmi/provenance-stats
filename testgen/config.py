@@ -68,7 +68,7 @@ utils = {
     'tac'       : ('{input1}',),
     'tail'      : ('{input1}',),
     'tee'       : ('{output1} < {input1}',),
-    'tr'        : ('[:lower:] [:upper:] < {input1}',),
+    'tr'        : ('\[:lower:\] \[:upper:\] < {input1}',),
     'truncate'  : ('-s 1024 {local_input1}',),
     'tsort'     : ('{input1}',),
     'unexpand'  : ('{input1}',),
