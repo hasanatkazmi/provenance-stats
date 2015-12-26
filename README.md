@@ -1,10 +1,17 @@
-### provenance-stats
+### Provenance Stats
 
-This framework cointains codebase that helps compare different provenance auditing methods. More specifically, this repository is collection of system setup, test generation and test stats generation scripts for instrumentation tradeoff and comparision work at SRI International. 
+This framework contains codebase that helps compare different provenance auditing methods. More specifically, this repository is collection of system setup, test generation and test stats generation scripts for instrumentation tradeoff and comparison work at SRI International. 
 
-This framework currently uses [SPADE] [1] as provenance auditing collection tool. This comparision matrix includes both compile time and runtime instumentation. For compile time insturmenation, we are using LLVM based code injecting tool that is shipped as part of SPADE. For run time instumentation, we use two types of two methods: syscall level provenance tracking using Strace and tracking of data during runtime using dtracker tool.
+This framework uses [SPADE] [1] as provenance auditing collection tool. The comparision matrix includes both compile time and runtime instumentation. For compile time insturmenation, we are using LLVM based code injecting tool that is shipped as part of SPADE. For run time instumentation, we use two types of two methods: syscall level provenance tracking using Strace (shipped along with SPADE) and tracking of data during runtime using dtracker tool. These tests are performed on GNU coreutils.
 
-Tested on Ubuntu 14.04 LTS 32 bit only.
+This reporsitoy performs these three tasks:
+- Prepares the system for running tests. It uses Ansible [http://docs.ansible.com/] to automate the process of installing all required packages and their dependencies. It also downloads and buils SPADE, dtracker and other tools.
+- Test generation scripts that generates more scripts that are used to run a specific test. A config file for test generation is also provided.
+- Stats collection scripts that checks the log files created when running the tests and generates a stats file.
+
+This has been tested on Ubuntu 14.04 LTS 32 bit only.
+
+Layout of this repository is as follows:
 
 - `setup`: Scripts related to setting up the system to run tests.
 - `setup/ubuntu.yml`: Ansible Playbook that sets up development environment for [SPADE][1].
@@ -18,7 +25,8 @@ Tested on Ubuntu 14.04 LTS 32 bit only.
 
 ### Prereqs:
 
-- Install Ansible:
+Only ansible and git are required. You can install these in Ubuntu by executing these commands:
+
 ```
 sudo add-apt-repository ppa:ansible/ansible
 sudo apt-get update
@@ -26,7 +34,7 @@ sudo apt-get install ansible git
 ```
 
 ### Machine setup
-- Let Ansible install and setup the machine:
+- Setup the machine using this command:
 ```
 source <(curl -s https://raw.githubusercontent.com/hasanatkazmi/provenance-stats/master/setup/ubuntu.sh)
 ```
