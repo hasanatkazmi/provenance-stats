@@ -23,7 +23,7 @@ Layout of this repository is as follows:
 - `testgen/mktests.py`: Script that generates test scripts.
 - `testgen/mkstats.py`: Script to generate stats (a CSV file) from the test.
 
-### Prereqs:
+### 0. Prereqs:
 
 Only ansible and git are required. You can install these in Ubuntu by executing these commands:
 
@@ -33,24 +33,25 @@ sudo apt-get update
 sudo apt-get install ansible git
 ```
 
-### Machine setup
+### 1. Machine setup
 - Setup the machine using this command:
 ```
 source <(curl -s https://raw.githubusercontent.com/hasanatkazmi/provenance-stats/master/setup/ubuntu.sh)
 ```
+This installs all required packages using apt-get and/or directly from the provider. It will also download and build all provenance auditing tools used. This step will take considerale time.
 (for debug commands, read top of ubuntu.yml)
 
-### Test generaion
-- Configure a test:
-Edit `testgen/config.py` to tailor the test accordingly. 
-- Generate a test:
+### 2. Test generaion
+- 2.1 Configure a test:
+Edit `testgen/config.py` to tailor the test accordingly. This file is well documented and each varible is explained.
+- 2.2 Generate a test:
 Execute `testgen/mktests.py` to create a test directory.
-- Start SPADE
+- 2.3 Start SPADE
 SPADE will be at `provenance-stats/staging/SPADE`. Run `./bin/spade start|debug` to start SPADE.
-- Run a test:
+- 2.4 Run a test:
 Exectute `<test>/run_all.sh` to run all tests. You can also run tests for individual reporters by running `<test>/<reporter>/run_all_<reporter>.sh`. You can furthermore run test for individual utility by executing `<test>/<reporter>/<util>/run_util.sh`.
 
-### Stats generation:      
+### 3.0 Stats generation:      
 
 - Run `testgen/mkstats.py`to generate a CSV file of test stats. By default CSV file location is `<test>/stats.csv`.
 
