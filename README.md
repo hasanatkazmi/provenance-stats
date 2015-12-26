@@ -23,7 +23,7 @@ Layout of this repository is as follows:
 - `testgen/mktests.py`: Script that generates test scripts.
 - `testgen/mkstats.py`: Script to generate stats (a CSV file) from the test.
 
-### 0. Prereqs:
+### 0. Install Prerequisites
 
 Only ansible and git are required. You can install these in Ubuntu by executing these commands:
 
@@ -33,7 +33,7 @@ sudo apt-get update
 sudo apt-get install ansible git
 ```
 
-### 1. Machine setup
+### 1. Setup Machine
 Setup the machine using this command:
 ```
 source <(curl -s https://raw.githubusercontent.com/hasanatkazmi/provenance-stats/master/setup/ubuntu.sh)
@@ -41,10 +41,10 @@ source <(curl -s https://raw.githubusercontent.com/hasanatkazmi/provenance-stats
 This installs all required packages using apt-get and/or directly from the provider. It will also download and build all provenance auditing tools used. This step will take considerale time.
 (for debug commands, read top of ubuntu.yml)
 
-### 2. Configure a test:
+### 2. Configure a test
 Edit `testgen/config.py` to tailor the test accordingly. This file is well documented and each varible is explained.
 
-### 3. Generate a test:
+### 3. Generate a test
 Execute `testgen/mktests.py` to create a test directory.
 
 ### 4. Start SPADE
