@@ -48,7 +48,7 @@ Edit `testgen/config.py` to tailor the test accordingly. This file is well docum
 
 ### 3. Generate a test
 
-Execute `testgen/mktests.py` to create a test directory.
+Execute `testgen/mktests.py` to create a test directory. Default test directory is `test` and will be located at root of the reporsitoy.
 
 ### 4. Start SPADE
 
