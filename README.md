@@ -34,6 +34,7 @@ sudo apt-get install ansible git
 ```
 
 ### 1. Setup Machine
+
 Setup the machine using this command:
 ```
 source <(curl -s https://raw.githubusercontent.com/hasanatkazmi/provenance-stats/master/setup/ubuntu.sh)
@@ -42,18 +43,22 @@ This installs all required packages using apt-get and/or directly from the provi
 (for debug commands, read top of ubuntu.yml)
 
 ### 2. Configure a test
+
 Edit `testgen/config.py` to tailor the test accordingly. This file is well documented and each varible is explained.
 
 ### 3. Generate a test
+
 Execute `testgen/mktests.py` to create a test directory.
 
 ### 4. Start SPADE
+
 SPADE will be at `provenance-stats/staging/SPADE`. Run `./bin/spade start|debug` to start SPADE.
 
 ### 5. Run a Test
+
 Exectute `<test>/run_all.sh` to run all tests. You can also run tests for individual reporters by running `<test>/<reporter>/run_all_<reporter>.sh`. You can furthermore run test for individual utility by executing `<test>/<reporter>/<util>/run_util.sh`.
 
-### 6. Stats generation:      
+### 6. Stats generation     
 
 Run `testgen/mkstats.py`to generate a CSV file of test stats. By default CSV file location is `<test>/stats.csv`.
 
