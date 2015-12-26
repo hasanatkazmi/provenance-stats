@@ -9,7 +9,7 @@ This reporsitoy performs these three tasks:
 - Test generation scripts that generates more scripts that are used to run a specific test. A config file for test generation is also provided.
 - Stats collection scripts that checks the log files created when running the tests and generates a stats file.
 
-This has been tested on Ubuntu 14.04 LTS 32 bit only.
+This has been tested on Ubuntu 14.04 LTS 32 bit only with LLVM version 3.6 and GNU coreutils 8.24.
 
 Layout of this repository is as follows:
 
