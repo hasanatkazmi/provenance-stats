@@ -60,7 +60,13 @@ Exectute `<test>/run_all.sh` to run all tests. You can also run tests for indivi
 
 ### 6. Stats generation     
 
-Run `testgen/mkstats.py`to generate a CSV file of test stats. By default CSV file location is `<test>/stats.csv`.
+Run `testgen/mkstats.py`to generate a CSV file of test stats. By default CSV file location is `<test>/stats.csv`. Each column in the CSV file has is explained here:
+- reporter: Type of instumentation that was performed.
+- util: Specific Coreutil utility that was used in the test.
+- time_avg: Average time taken of multiple runs of the utility. Unit of time is seconds.
+- time_stddev: Standard time deviation of multiple test runs.
+- vertices_avg: Average vertices count for the provenance graph.
+- edges_avg: Average edge count for the provenance graph.
 
   [1]: https://github.com/ashish-gehani/SPADE
 
