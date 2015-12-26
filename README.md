@@ -1,8 +1,9 @@
 ### provenance-stats
 
-This reporsitory contains system setup, test generation and test stats generation scripts for instrumentation tradeoff and comparision work at SRI. 
+This framework cointains codebase that helps compare different provenance auditing methods. More specifically, this repository is collection of system setup, test generation and test stats generation scripts for instrumentation tradeoff and comparision work at SRI International. 
 
-##Work in progress. Do not use!
+This framework currently uses [SPADE] [1] as provenance auditing collection tool. This comparision matrix includes both compile time and runtime instumentation. For compile time insturmenation, we are using LLVM based code injecting tool that is shipped as part of SPADE. For run time instumentation, we use two types of two methods: syscall level provenance tracking using Strace and tracking of data during runtime using dtracker tool.
+
 Tested on Ubuntu 14.04 LTS 32 bit only.
 
 - `setup`: Scripts related to setting up the system to run tests.
