@@ -42,6 +42,8 @@ source <(curl -s https://raw.githubusercontent.com/hasanatkazmi/provenance-stats
 This installs all required packages using apt-get and/or directly from the provider. It will also download and build all provenance-auditing tools used. This step will take considerable time. 
 (for debug commands, read top of ubuntu.yml)
 
+For Strace reporter to report correctly, Edit and set `/proc/sys/kernel/yama/ptrace_scope` to `0`.
+
 ### 3. Configure a test
 
 Edit `testgen/config.py` to tailor the test accordingly. This file is well documented and each variable is explained.
