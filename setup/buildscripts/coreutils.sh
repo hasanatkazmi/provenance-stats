@@ -3,7 +3,8 @@
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cwd=$(pwd)
-cd $BASEDIR/../../staging/coreutils-8.24
+UTILSDIR=$BASEDIR/../../staging/coreutils-8.24
+cd $UTILSDIR
 
 PATH=$PATH:$BASEDIR/../../staging/whole-program-llvm
 export $PATH
@@ -16,7 +17,8 @@ CC=wllvm ./configure
 unset WLLVM_CONFIGURE_ONLY
 make
 
+$LLVM_COMPILER $UTILSDIR/src/null.c -o $UTILSDIR/src/null
 cd $cwd
 
 mkdir -p $BASEDIR/../../bins/uninstrumented/
-cp -r $BASEDIR/../../staging/coreutils-8.24 $BASEDIR/../../bins/uninstrumented/coreutils-8.24
+cp -r $UTILSDIR $BASEDIR/../../bins/uninstrumented/coreutils-8.24
