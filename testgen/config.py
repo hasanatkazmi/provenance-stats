@@ -75,6 +75,7 @@ utils = {
     'unexpand'  : ('{input1}',),
     'uniq'      : ('{input1}',),
     'wc'        : ('{input1}',),
+    'null'	: ('',),
 }
 formats = {
     'spade_adddb' : '''
