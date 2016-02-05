@@ -71,7 +71,7 @@ Run `testgen/mkstats.py`to generate a CSV file of test stats. By default CSV fil
 - `time_stddev`: Standard deviation for time in multiple test runs. Unit is seconds.
 - `vertices_avg`: Average vertices count for the provenance graph
 - `edges_avg`: Average edge count for the provenance graph.
-- `timedout_count`: Number of times, util was killed because of timeout.
+- `timedout_count`: Number of times util was killed because of timeout.
 
   [1]: https://github.com/ashish-gehani/SPADE
 
