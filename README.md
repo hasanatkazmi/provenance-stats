@@ -2,7 +2,7 @@
 
 This framework contains codebase that helps compare different provenance auditing methods. More specifically, this repository is collection of system setup, test generation and test stats generation scripts for instrumentation tradeoff and comparison work at SRI International.
 
-This framework uses SPADE as provenance auditing collection tool. The comparison matrix includes both compile time and runtime instrumentation. For compile time instrumentation, we are using LLVM based code injecting tool that is shipped as part of SPADE. For run time instrumentation, we use two types of two methods: syscall level provenance tracking using Strace (shipped along with SPADE) and tracking of data during runtime using dtracker tool. These tests are performed on GNU coreutils.
+This framework uses SPADE as provenance auditing collection tool. The comparison matrix includes both compile time and runtime instrumentation. For compile time instrumentation, we are using LLVM based code injecting tool that is shipped as part of SPADE. For run time instrumentation, we use two types of methods: syscall level provenance tracking using Strace (shipped along with SPADE) and tracking of data during runtime using dtracker tool. These tests are performed on GNU coreutils.
 
 This repository performs these three tasks:
 - Prepares the system for running tests. It uses Ansible [http://docs.ansible.com/] to automate the process of installing all required packages and their dependencies. It also downloads and builds SPADE, dtracker and other tools.
