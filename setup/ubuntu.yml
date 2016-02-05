@@ -106,7 +106,7 @@
         - git: repo=https://github.com/m000/dtracker.git dest={{ staging }}/dtracker
         - get_url: url=http://ftp.gnu.org/gnu/coreutils/coreutils-{{ core_utils_version }}.tar.xz dest={{ staging }}
         - unarchive: src={{ staging }}/coreutils-{{ core_utils_version }}.tar.xz dest={{ staging }}
-        - lineinfile: dest={{ staging }}/coreutils-{{ core_utils_version }}/src/null.c state=present create=yes line="int main(){return 1;}"
+        - lineinfile: dest={{ staging }}/coreutils-{{ core_utils_version }}/src/null.c state=present create=yes line="int main(){return 0;}"
 
 # set /proc/sys/kernel/yama/ptrace_scope to 0
 
