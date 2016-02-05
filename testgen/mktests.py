@@ -74,6 +74,7 @@ for reporter in reporters:
             the_tlogfile = _( '%s_%s_time.log' % (reporter, util) )
             the_timeformat = '%s;%s;%s' % (reporter, util, timeformat_base)
             the_bindir = bindirs[reporter]
+            the_timeoutfile = _( '%s_%s_exitstatus.log' % (reporter, util) )
 
             # create directories and copy inputs
             os.makedirs(_(''))
@@ -122,6 +123,8 @@ for reporter in reporters:
                         'logfile': the_logfile,
                         'elogfile': the_elogfile,
                         'tlogfile': the_tlogfile,
+                        'timeoutfile': the_timeoutfile,
+                        'timeout_period' : timeout_period,
                     }
                 )
 
@@ -145,6 +148,8 @@ for reporter in reporters:
                         'logfile': the_logfile,
                         'elogfile': the_elogfile,
                         'tlogfile': the_tlogfile,
+                        'timeoutfile': the_timeoutfile,
+                        'timeout_period' : timeout_period,
                     }
                 )
                 writeScript(filename = _("reporter_attach.sh"),
@@ -187,6 +192,8 @@ for reporter in reporters:
                         'elogfile': the_elogfile,
                         'tlogfile': the_tlogfile,
                         'bindir' : the_bindir,
+                        'timeoutfile': the_timeoutfile,
+                        'timeout_period' : timeout_period,
                     }
                 )
                 command_line = "forcedremoval=false"
@@ -246,6 +253,8 @@ for reporter in reporters:
                         'pin_home' : pin_home,
                         'dtracker_home': dtracker_home,
                         'spade_dslpipe': spade_dslpipe,
+                        'timeoutfile': the_timeoutfile,
+                        'timeout_period' : timeout_period,
                     }
                 )
 

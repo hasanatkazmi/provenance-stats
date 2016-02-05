@@ -11,7 +11,8 @@ from os.path import join as pj
 ### Runtime options
 reporters = ["none", "llvm", "strace", "dtracker"]  # all reporters that we want to test out
 runs = 5                                            # number of runs for each util
-inputsize = 1024
+inputsize = 1024                                    # size in bytes for input files to utils
+timeout_period = 60                                 # timeout period in seconds for killing indivisual test runs
 bash_header = '#!/bin/bash'                         # header to use when writing bash scripts
 timeformat_base = '%3R;%3U;%3S;%P'
 
@@ -136,57 +137,69 @@ formats = {
     ''',
     'none_runbin.sh': '''
         #!/bin/bash
-        export TIMEFORMAT='{timeformat}'
+        timeout {timeout_period} bash -c "
+            export TIMEFORMAT='{timeformat}'
 
-        function do_run() {{
-            seq 100 | xargs -Iz {command_line}
-        }}
+            function do_run() {{
+                seq 100 | xargs -Iz {command_line}
+            }}
 
-        echo 'Running: {command_line}'
-	{{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
+            echo 'Running: {command_line}'
+            {{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
+        "
+        echo $? > {timeoutfile}
     ''',
     'strace_runbin.sh': '''
         #!/bin/bash
-        export TIMEFORMAT='{timeformat}'
+        timeout {timeout_period} bash -c "
+            export TIMEFORMAT='{timeformat}'
 
-        function do_run() {{
-            strace {command_line}
-        }}
+            function do_run() {{
+                strace {command_line}
+            }}
 
-        echo 'Running: {command_line}'
-	{{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
+            echo 'Running: {command_line}'
+            {{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
+        "
+        echo $? > {timeoutfile}
     ''', 
     'llvm_runbin.sh': '''
         #!/bin/bash
-        export TIMEFORMAT='{timeformat}'
+        timeout {timeout_period} bash -c "
+            export TIMEFORMAT='{timeformat}'
 
-        function do_run() {{
-            #seq 100 | xargs -Iz {command_line}
-            {command_line}
-        }}
+            function do_run() {{
+                #seq 100 | xargs -Iz {command_line}
+                {command_line}
+            }}
 
-        echo 'Running: {command_line}'
-    cd {bindir}
-	{{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
-    cd -
+            echo 'Running: {command_line}'
+            cd {bindir}
+            {{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
+            cd -
+        "
+        echo $? > {timeoutfile}
     ''',
     'dtracker_runbin.sh': '''
         #!/bin/bash
-        export TIMEFORMAT='{timeformat}'
-        export PIN_HOME={pin_home}
+        timeout {timeout_period} bash -c "
+            export TIMEFORMAT='{timeformat}'
+            export PIN_HOME={pin_home}
 
-        function do_run() {{
-            {pin_home}/pin.sh -follow_execv -t {dtracker_home}/obj-ia32/dtracker.so -o {dtracker_home}/rawprov.out -- {command_line}
-        }}
+            function do_run() {{
+                {pin_home}/pin.sh -follow_execv -t {dtracker_home}/obj-ia32/dtracker.so -o {dtracker_home}/rawprov.out -- {command_line}
+            }}
 
-	#[ -e {spade_dslpipe} ] && rm -f {spade_dslpipe}
-	#{spade_dbattach}
-    #    {spade_reporter_add}
-        echo 'Running: {command_line}'
-	{{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
-        {dtracker_home}/raw2dsl.py < {dtracker_home}/rawprov.out > {spade_dslpipe}
-    #    {spade_reporter_rm}
-	#{spade_dbremove}
+            # [ -e {spade_dslpipe} ] && rm -f {spade_dslpipe}
+            # {spade_dbattach}
+            # {spade_reporter_add}
+            echo 'Running: {command_line}'
+            {{ time do_run 1>{logfile} 2>{elogfile}; }} 2> {tlogfile}
+            {dtracker_home}/raw2dsl.py < {dtracker_home}/rawprov.out > {spade_dslpipe}
+            # {spade_reporter_rm}
+            # {spade_dbremove}
+        "
+        echo $? > {timeoutfile}
     ''',
 }
 
