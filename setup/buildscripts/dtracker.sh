@@ -12,6 +12,10 @@ make -C support -f makefile.pin
 make -C support -f makefile.provtoolbox
 
 export PIN_HOME="$DTRACKER_HOME"/pin
+cd support
+git clone https://github.com/m000/byte-unixbench.git
+cd ..
+GIT_SSL_NO_VERIFY=true git submodule update --init
 make support-libdft
 make
 
